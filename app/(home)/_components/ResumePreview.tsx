@@ -1,37 +1,43 @@
 import React from "react";
-import PersonalInfo from "./preview/PersonalInfo";
 import { useResumeInfoContext } from "@/context/resume-info-provider";
+
+import { cn } from "@/lib/utils";
+import PersonalInfo from "./preview/PersonalInfo";
 import SummaryPreview from "./preview/SummaryPreview";
 import ExperiencePreview from "./preview/ExperiencePreview";
 import EducationalPreview from "./preview/EducationalPreview";
 import SkillPreview from "./preview/SkillPreview";
-import { cn } from "@/lib/utils";
+import { INITIAL_THEME_COLOR } from "@/lib/helper";
 
 const ResumePreview = () => {
-  const { resumeInfo } = useResumeInfoContext();
+  const { resumeInfo, isLoading } = useResumeInfoContext();
+  const themeColor = resumeInfo?.themeColor || INITIAL_THEME_COLOR;
+  console.log(themeColor);
   return (
     <div
-      className={cn(`shadow-lg bg-white  w-full flex-[1.02] 
-      h-full p-10 border-t-primary !border-t-[13px] 
-      dark:border dark:!border-gray-800 dark:!border-t-primary
-      dark:bg-card 
-     `)}
-      style={{ borderColor: resumeInfo?.themeColor }}
+      className={cn(
+        `shadow-lg bg-white w-full flex-[1.02] h-full p-10
+     dark:border dark:bg-card !font-open-sans
+     dark:border-b-gray-800 dark:border-x-gray-800`
+      )}
+      style={{
+        borderTop: `13px solid ${themeColor || "red"}`,
+      }}
     >
       {/* {Personnal Info} */}
-      <PersonalInfo resumeInfo={resumeInfo} />
+      <PersonalInfo isLoading={isLoading} resumeInfo={resumeInfo} />
 
       {/* {Summery} */}
-      <SummaryPreview resumeInfo={resumeInfo} />
+      <SummaryPreview isLoading={isLoading} resumeInfo={resumeInfo} />
 
       {/* {Professional Exp.} */}
-      <ExperiencePreview resumeInfo={resumeInfo} />
+      <ExperiencePreview isLoading={isLoading} resumeInfo={resumeInfo} />
 
       {/* {Eduncational Info} */}
-      <EducationalPreview resumeInfo={resumeInfo} />
+      <EducationalPreview isLoading={isLoading} resumeInfo={resumeInfo} />
 
       {/* {Skills} */}
-      <SkillPreview resumeInfo={resumeInfo} />
+      <SkillPreview isLoading={isLoading} resumeInfo={resumeInfo} />
     </div>
   );
 };

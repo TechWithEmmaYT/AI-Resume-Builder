@@ -1,21 +1,43 @@
 "use cient";
-import React, { FC, useCallback, useMemo } from "react";
-import { Clock, EllipsisVertical, File } from "lucide-react";
+import React, { FC, useCallback, useMemo, useState } from "react";
+import {
+  Dot,
+  EllipsisVertical,
+  FileText,
+  Globe,
+  Link,
+  Lock,
+  Trash2,
+} from "lucide-react";
 import { format } from "date-fns";
-import { generateBaseColor } from "@/lib/helper";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { useRouter } from "next/navigation";
 
 interface PropeType {
   documentId: string;
   title: string;
-  status: "archived" | "published" | null;
+  status: "archived" | "private" | "public" | null;
+  themeColor: string | null;
   updatedAt: string;
 }
 
-const ResumeItem: FC<PropeType> = ({ documentId, title, updatedAt }) => {
+const ResumeItem: FC<PropeType> = ({
+  documentId,
+  status,
+  title,
+  themeColor,
+  updatedAt,
+}) => {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const baseColor = generateBaseColor();
   const docDate = useMemo(() => {
     if (!updatedAt) return null;
     const formattedDate = format(updatedAt, "MMM dd, yyyy");
@@ -26,10 +48,16 @@ const ResumeItem: FC<PropeType> = ({ documentId, title, updatedAt }) => {
     router.push(`/dashboard/document/${documentId}/edit`);
   }, [router, documentId]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleOption = useCallback((e: any) => {
+    e.stopPropagation();
+    setIsOpen(true);
+  }, []);
+
   return (
     <div
       role="button"
-      className="cursor-pointer max-w-[164px] border bg-white 
+      className="cursor-pointer max-w-[164px] border 
       rounded-lg
       transition-all
       h-[197px]
@@ -38,34 +66,74 @@ const ResumeItem: FC<PropeType> = ({ documentId, title, updatedAt }) => {
     shadow-primary
       "
       style={{
-        backgroundColor: `${baseColor}1A`,
-        borderColor: `${baseColor}c1`,
+        borderColor: themeColor || "",
       }}
       onClick={goToDoc}
     >
       <div
         className="flex flex-col w-full h-full items-center 
-        justify-center dark:bg-secondary"
+      rounded-lg
+        justify-center bg-white dark:bg-secondary"
       >
         <div className="w-full flex flex-1 justify-center items-center">
-          <File />
+          <FileText />
         </div>
         <div className="shrink w-full border-t pt-2 pb-[9px] px-[9px]">
           <div className="flex items-center justify-between">
-            <h5 className="font-semibold text-sm mb-[2px]">{title}</h5>
-            <button className="text-muted-foreground">
-              <EllipsisVertical size="20px" />
-            </button>
+            <h5 className="font-semibold text-sm mb-[2px] truncate block w-[200px]">
+              {title}
+            </h5>
+            <DropdownMenu modal open={isOpen} onOpenChange={setIsOpen}>
+              <DropdownMenuTrigger asChild onClick={(e) => handleOption(e)}>
+                <button className="text-muted-foreground">
+                  <EllipsisVertical size="20px" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem className="gap-1 !cursor-pointer">
+                  {status === "private" ? (
+                    <>
+                      <Globe size="12px" className="" />
+                      Switch Public
+                    </>
+                  ) : (
+                    <>
+                      <Lock size="12px" />
+                      Switch Private
+                    </>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem className="gap-1 !cursor-pointer">
+                  <Link size="15px" />
+                  Copy link
+                </DropdownMenuItem>
+                <DropdownMenuItem className="gap-1 !cursor-pointer">
+                  <Trash2 size="15px" />
+                  Trash
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <div
-            className="flex items-center gap-1 text-[12px] 
+            className="flex items-center !text-[12px] 
               font-medium 
           text-muted-foreground"
           >
-            <Clock size="15px" />
-            <p className="truncate w-full max-w-[200px] block">
-              Modified {docDate}
-            </p>
+            <span className="flex items-center gap-[2px]">
+              {status === "private" ? (
+                <>
+                  <Lock size="12px" />
+                  Private
+                </>
+              ) : (
+                <>
+                  <Globe size="12px" className="text-primary" />
+                  Public
+                </>
+              )}
+            </span>
+            <Dot size="15px" />
+            <span className="items-center">{docDate}</span>
           </div>
         </div>
       </div>

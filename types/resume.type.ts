@@ -1,41 +1,56 @@
 export type ExperienceType = {
-  id: number;
-  title: string;
-  companyName: string;
-  city: string;
-  state: string;
-  startDate: string;
-  endDate?: string;
+  id?: number;
+  docId?: number | null;
+  title: string | null;
+  companyName: string | null;
+  city: string | null;
+  state: string | null;
+  startDate: string | null;
+  endDate?: string | null;
   currentlyWorking: boolean;
-  workSummery: string;
+  workSummary: string | null;
 };
 
 export type EducationType = {
-  id: number;
-  universityName: string;
-  startDate: string;
-  endDate: string;
-  degree: string;
-  major: string;
-  description: string;
+  id?: number;
+  docId?: number | null;
+  universityName: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  degree: string | null;
+  major: string | null;
+  description: string | null;
 };
 
 export type SkillType = {
-  id: number;
-  name: string;
-  rating: number;
+  id?: number;
+  docId?: number | null;
+  name: string | null;
+  rating?: number;
+};
+
+export type PersonalInfoType = {
+  id?: number;
+  docId?: number | null;
+  firstName: string | null;
+  lastName: string | null;
+  jobTitle: string | null;
+  address: string | null;
+  phone: string | null;
+  email: string | null;
 };
 
 export type ResumeDataType = {
-  firstName: string;
-  lastName: string;
-  jobTitle: string;
-  address: string;
-  phone: string;
-  email: string;
-  themeColor: string;
-  summery: string;
-  experience: ExperienceType[];
-  education: EducationType[];
-  skills: SkillType[];
+  id?: number;
+  documentId?: string;
+  title: string;
+  status: "archived" | "private" | "public" | null;
+  personalInfo?: PersonalInfoType | null;
+  themeColor?: string | null;
+  currentPosition?: number | null;
+  summary: string | null;
+  experiences?: ExperienceType[] | null;
+  educations?: EducationType[] | null;
+  skills?: SkillType[] | null;
+  updatedAt?: string;
 };

@@ -1,0 +1,1 @@
+ALTER TABLE "experience" ALTER COLUMN "work_summary" SET DATA TYPE text;

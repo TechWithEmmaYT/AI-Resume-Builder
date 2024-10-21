@@ -1,31 +1,87 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useResumeInfoContext } from "@/context/resume-info-provider";
-import { ResumeDataType } from "@/types/resume.type";
-import React, { useCallback } from "react";
+import PersonalInfoSkeletonLoader from "@/components/skeleton-loader/personal-info-loader";
+import { PersonalInfoType } from "@/types/resume.type";
+import useUpdateDocument from "@/features/document/use-update-document";
+import { Loader } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
-const PersonalInfoForm = () => {
-  const { resumeInfo, onUpdate } = useResumeInfoContext();
+const initialState = {
+  firstName: "",
+  lastName: "",
+  jobTitle: "",
+  address: "",
+  phone: "",
+  email: "",
+};
 
-  const handleChange = useCallback(
-    (e: { target: { name: any; value: any } }) => {
-      const { name, value } = e.target;
+const PersonalInfoForm = (props: { handleNext: () => void }) => {
+  const { handleNext } = props;
+  const { resumeInfo, isLoading } = useResumeInfoContext();
+  const { mutateAsync, isPending } = useUpdateDocument();
 
-      const resumeDataInfo = resumeInfo as ResumeDataType;
-      const updatedInfo = {
-        ...resumeDataInfo,
-        [name]: value,
-      };
-      console.log(updatedInfo);
-      onUpdate(updatedInfo);
+  const [personalInfo, setPersonalInfo] =
+    React.useState<PersonalInfoType>(initialState);
+
+  useEffect(() => {
+    if (!resumeInfo) {
+      return;
+    }
+    if (resumeInfo?.personalInfo) {
+      setPersonalInfo({
+        ...(resumeInfo?.personalInfo || initialState),
+      });
+    }
+  }, [resumeInfo?.personalInfo]);
+
+  const handleChange = (e: { target: { name: string; value: string } }) => {
+    const { name, value } = e.target;
+
+    setPersonalInfo((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = useCallback(
+    async (e: { preventDefault: () => void }) => {
+      e.preventDefault();
+      if (!resumeInfo) return;
+      await mutateAsync(
+        {
+          title: resumeInfo?.title || "Untitled Resume",
+          currentPosition: resumeInfo.currentPosition || 1,
+          themeColor: resumeInfo.themeColor ?? "#7c3aed",
+          personalInfo: personalInfo,
+        },
+        {
+          onSuccess: () => {
+            toast({
+              title: "Success",
+              description: "PersonalInfo updated successfully",
+            });
+            handleNext();
+          },
+          onError() {
+            toast({
+              title: "Error",
+              description: "Failed to update personal information",
+              variant: "destructive",
+            });
+          },
+        }
+      );
     },
-    [resumeInfo]
+    [resumeInfo, personalInfo]
   );
 
-  const onSave = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-  };
+  if (isLoading) {
+    return <PersonalInfoSkeletonLoader />;
+  }
 
   return (
     <div>
@@ -34,14 +90,15 @@ const PersonalInfoForm = () => {
         <p className="text-sm">Get Started with the personal infomation</p>
       </div>
       <div>
-        <form onSubmit={onSave}>
+        <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 mt-5 gap-3">
             <div>
               <Label className="text-sm">First Name</Label>
               <Input
                 name="firstName"
                 required
-                placeholder="John"
+                placeholder=""
+                value={personalInfo?.firstName || ""}
                 onChange={handleChange}
               />
             </div>
@@ -51,33 +108,55 @@ const PersonalInfoForm = () => {
               <Input
                 name="lastName"
                 required
-                placeholder="Smith"
+                placeholder=""
+                value={personalInfo?.lastName || ""}
                 onChange={handleChange}
               />
             </div>
 
             <div className="col-span-2">
               <Label className="text-sm">Job Title</Label>
-              <Input name="jobTitle" required onChange={handleChange} />
+              <Input
+                name="jobTitle"
+                required
+                value={personalInfo?.jobTitle || ""}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="col-span-2">
               <Label className="text-sm">Address</Label>
-              <Input name="address" required onChange={handleChange} />
+              <Input
+                name="address"
+                required
+                value={personalInfo?.address || ""}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="col-span-2">
-              <Label className="text-sm">Phone</Label>
-              <Input name="phone" required onChange={handleChange} />
+              <Label className="text-sm">Phone number</Label>
+              <Input
+                name="phone"
+                required
+                value={personalInfo?.phone || ""}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="col-span-2">
               <Label className="text-sm">Email</Label>
-              <Input name="email" required onChange={handleChange} />
+              <Input
+                name="email"
+                value={personalInfo?.email || ""}
+                required
+                onChange={handleChange}
+              />
             </div>
           </div>
 
-          <Button className="mt-4" type="submit">
+          <Button className="mt-4" type="submit" disabled={isPending}>
+            {isPending && <Loader size="15px" className="animate-spin" />}
             Save Changes
           </Button>
         </form>

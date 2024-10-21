@@ -1,9 +1,15 @@
-import { resumeData } from "@/lib/dummy";
+"use client";
+import useGetDocumentById from "@/features/document/use-get-document-by-id";
 import { ResumeDataType } from "@/types/resume.type";
+import { useParams } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type ResumeContextType = {
   resumeInfo: ResumeDataType | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+  refetch: () => void;
   onUpdate: (data: ResumeDataType) => void;
 };
 
@@ -14,19 +20,32 @@ export const ResumeInfoContext = createContext<ResumeContextType | undefined>(
 export const ResumeInfoProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const param = useParams();
+  const documentId = param.documentId as string;
+
+  const { data, isSuccess, isLoading, isError, refetch } =
+    useGetDocumentById(documentId);
+
   const [resumeInfo, setResumeInfo] = useState<ResumeDataType>();
 
   useEffect(() => {
-    setResumeInfo(resumeData);
-  }, []);
+    if (isSuccess) {
+      setResumeInfo(data?.data);
+    }
+  }, [isSuccess]);
 
   const onUpdate = (data: ResumeDataType) => {
     setResumeInfo(data);
   };
+
   return (
     <ResumeInfoContext.Provider
       value={{
         resumeInfo,
+        isSuccess,
+        isLoading,
+        isError,
+        refetch,
         onUpdate,
       }}
     >

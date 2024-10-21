@@ -1,17 +1,26 @@
 import React from "react";
 import { ResumeDataType } from "@/types/resume.type";
+import SkeletonLoader from "@/components/skeleton-loader";
+import { INITIAL_THEME_COLOR } from "@/lib/helper";
 
 const EducationalPreview = ({
   resumeInfo,
+  isLoading,
 }: {
   resumeInfo: ResumeDataType | undefined;
+  isLoading: boolean;
 }) => {
+  const themeColor = resumeInfo?.themeColor || INITIAL_THEME_COLOR;
+
+  if (isLoading) {
+    return <SkeletonLoader />;
+  }
   return (
     <div className="w-full my-5">
       <h5
         className="text-center font-bold text-sm mb-2"
         style={{
-          color: resumeInfo?.themeColor,
+          color: themeColor,
         }}
       >
         Education
@@ -19,30 +28,34 @@ const EducationalPreview = ({
       <hr
         className="border-[1.5px]"
         style={{
-          borderColor: resumeInfo?.themeColor,
+          borderColor: themeColor,
         }}
       />
 
-      <div className="flex flex-col gap-2 pt-3">
-        {resumeInfo?.education?.map((education, index) => (
+      <div className="flex flex-col gap-2 pt-3  min-h-9">
+        {resumeInfo?.educations?.map((education, index) => (
           <div key={index}>
             <h5
               className="text-sm font-bold"
               style={{
-                color: resumeInfo?.themeColor,
+                color: themeColor,
               }}
             >
               {education?.universityName}
             </h5>
             <div className="flex items-start justify-between">
-              <h5 className="text-xs">
-                {education?.degree} in {education?.major}
+              <h5 className="text-[13px]">
+                {education?.degree}
+                {education?.degree && education?.major && `in `}
+                {education?.major}
               </h5>
-              <span className="text-xs">
-                {education?.startDate} - {education?.endDate}
+              <span className="text-[13px]">
+                {education?.startDate}
+                {education?.startDate && `- `}
+                {education?.endDate}
               </span>
             </div>
-            <p className="text-xs my-2">{education?.description}</p>
+            <p className="text-[13px] my-2">{education?.description}</p>
           </div>
         ))}
       </div>

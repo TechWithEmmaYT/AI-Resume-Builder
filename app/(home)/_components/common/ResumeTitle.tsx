@@ -1,22 +1,29 @@
-import { FileText } from "lucide-react";
-import React, { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Lock, FileText, Globe, Trash2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 interface ResumeTitleProps {
   initialTitle?: string;
+  isLoading: boolean;
+  status?: "archived" | "private" | "public" | null;
   onSave?: (newTitle: string) => void;
 }
 
 const ResumeTitle: React.FC<ResumeTitleProps> = ({
-  initialTitle = "Untitled document",
+  initialTitle,
+  isLoading,
+  status,
   onSave,
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(initialTitle);
+  const [title, setTitle] = useState("Untitled Resume");
+
+  useEffect(() => {
+    if (initialTitle) setTitle(initialTitle);
+  }, [initialTitle]);
 
   const handleBlur = (e: React.FocusEvent<HTMLHeadingElement>) => {
     const newTitle = e.target.innerText;
     setTitle(newTitle); // Update title state
-    setIsEditing(false); // Exit editing mode
     if (onSave && typeof onSave === "function") {
       onSave(newTitle); // Call the save function with the new title
     }
@@ -30,19 +37,32 @@ const ResumeTitle: React.FC<ResumeTitleProps> = ({
   };
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1 pr-4">
       <FileText className="stroke-primary" size="20px" />
       <h5
-        className="text-[20px] px-1 text-gray-700 dark:text-gray-300 font-semibold"
-        contentEditable
+        className={cn(
+          "text-[20px] px-1 text-gray-700 dark:text-gray-300 font-semibold opacity-100",
+          {
+            "!opacity-70": isLoading === true,
+          }
+        )}
+        contentEditable={isLoading ? false : true}
         suppressContentEditableWarning={true} // Suppress warning for contentEditable
         onBlur={handleBlur} // Handle save on blur
         onKeyDown={handleKeyDown} // Handle Enter key
-        onClick={() => setIsEditing(true)} // Start editing on click
         spellCheck={false} // Optionally disable spell check
       >
         {title}
       </h5>
+      <span>
+        {status === "private" ? (
+          <Lock size="14px" className="" />
+        ) : status === "public" ? (
+          <Globe size="14px" />
+        ) : status === "archived" ? (
+          <Trash2 size="14px" />
+        ) : null}
+      </span>
     </div>
   );
 };

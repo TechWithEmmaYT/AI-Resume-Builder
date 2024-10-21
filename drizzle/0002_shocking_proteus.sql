@@ -1,0 +1,1 @@
+ALTER TABLE "document" ALTER COLUMN "current_position" SET DEFAULT 1;

@@ -1,16 +1,26 @@
+enum Status {
+  private = "private",
+  public = "public",
+  archived = "archived",
+}
+
 export const resumeData = {
-  firstName: "Sarah",
-  lastName: "Johnson",
-  jobTitle: "Software Engineer",
-  address: "1234 Elm Street, CA 90210",
-  phone: "(987)-654-3210",
-  email: "sarah.johnson@example.com",
+  title: "Untitled document",
+  status: Status.private,
   themeColor: "#7c3aed",
-  summery:
+  currentPosition: 1,
+  personalInfo: {
+    firstName: "Sarah",
+    lastName: "Johnson",
+    jobTitle: "Software Engineer",
+    address: "1234 Elm Street, CA 90210",
+    phone: "(987)-654-3210",
+    email: "sarah.johnson@example.com",
+  },
+  summary:
     "Experienced software engineer with a passion for developing innovative programs that expedite the efficiency and effectiveness of organizational success. Proficient in both front-end and back-end development, with a focus on building scalable web applications and improving user experience.",
   experience: [
     {
-      id: 1,
       title: "Software Engineer",
       companyName: "Microsoft",
       city: "San Francisco",
@@ -18,31 +28,33 @@ export const resumeData = {
       startDate: "Feb 2022",
       endDate: "",
       currentlyWorking: true,
-      workSummery:
-        "• Developed scalable web applications using React, TypeScript, and Node.js.\n" +
-        "• Collaborated with cross-functional teams to design, implement, and maintain new features.\n" +
-        "• Optimized performance of applications, reducing load times by 30%.\n" +
-        "• Integrated third-party services and APIs to enhance application functionality.",
+      workSummary: `
+      <ul>
+      <li>Developed scalable web applications using React, TypeScript, and Node.js.</li>
+        <li> Collaborated with cross-functional teams to design, implement, and maintain new features</li>
+        <li> Optimized performance of applications, reducing load times by 30% </li>
+        <li> Integrated third-party services and APIs to enhance application functionality </li>
+      </ul>
+      `,
     },
-    {
-      id: 2,
-      title: "Frontend Developer",
-      companyName: "Facebook",
-      city: "Menlo Park",
-      state: "CA",
-      startDate: "Aug 2019",
-      endDate: "Jan 2022",
-      currentlyWorking: false,
-      workSummery:
-        "• Designed and developed high-performance user interfaces using React and Redux.\n" +
-        "• Worked closely with UX/UI designers to ensure seamless and intuitive user experiences.\n" +
-        "• Implemented responsive design techniques for optimal viewing on all devices.\n" +
-        "• Mentored junior developers and conducted code reviews to maintain high-quality standards.",
-    },
+    // {
+    //   id: 2,
+    //   title: "Frontend Developer",
+    //   companyName: "Facebook",
+    //   city: "Menlo Park",
+    //   state: "CA",
+    //   startDate: "Aug 2019",
+    //   endDate: "Jan 2022",
+    //   currentlyWorking: false,
+    //   workSummary:
+    //     "• Designed and developed high-performance user interfaces using React and Redux.\n" +
+    //     "• Worked closely with UX/UI designers to ensure seamless and intuitive user experiences.\n" +
+    //     "• Implemented responsive design techniques for optimal viewing on all devices.\n" +
+    //     "• Mentored junior developers and conducted code reviews to maintain high-quality standards.",
+    // },
   ],
   education: [
     {
-      id: 1,
       universityName: "Stanford University",
       startDate: "Sep 2017",
       endDate: "Jun 2019",
@@ -52,7 +64,6 @@ export const resumeData = {
         "Graduated with a focus on software engineering and systems architecture, specializing in scalable web applications and distributed systems.",
     },
     {
-      id: 2,
       universityName: "University of California, Berkeley",
       startDate: "Sep 2013",
       endDate: "Jun 2017",
@@ -64,29 +75,27 @@ export const resumeData = {
   ],
   skills: [
     {
-      id: 1,
       name: "React",
       rating: 95,
     },
     {
-      id: 2,
       name: "Node.js",
       rating: 90,
     },
-    {
-      id: 3,
-      name: "TypeScript",
-      rating: 85,
-    },
-    {
-      id: 4,
-      name: "Python",
-      rating: 80,
-    },
-    {
-      id: 5,
-      name: "GraphQL",
-      rating: 75,
-    },
+    // {
+    //   id: 3,
+    //   name: "TypeScript",
+    //   rating: 85,
+    // },
+    // {
+    //   id: 4,
+    //   name: "Python",
+    //   rating: 80,
+    // },
+    // {
+    //   id: 5,
+    //   name: "GraphQL",
+    //   rating: 75,
+    // },
   ],
 };

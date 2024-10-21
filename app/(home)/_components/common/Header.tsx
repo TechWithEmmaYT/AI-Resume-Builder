@@ -1,13 +1,6 @@
 "use client";
 import React, { Fragment } from "react";
-import {
-  ChevronDown,
-  ExternalLink,
-  Loader,
-  MoonIcon,
-  Settings,
-  SunIcon,
-} from "lucide-react";
+import { ChevronDown, Loader, MoonIcon, SunIcon } from "lucide-react";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useTheme } from "next-themes";
 import {
@@ -26,19 +19,6 @@ const Header = () => {
   const { user, isAuthenticated, isLoading, error } = useKindeBrowserClient();
   return (
     <div className="shadow-sm w-full sticky top-0  bg-white dark:bg-gray-900 z-[9999]">
-      {/* <div className="w-full flex items-center justify-center h-auto bg-black">
-        <div className="max-w-6xl mx-auto py-2">
-          <p className="text-white text-sm">
-            Subcribe to Techwithemma? Boost your skill with CVbuild.ai Resume
-            Course out{" "}
-            <a className="inline-flex items-center gap-1 font-bold text-green-500">
-              CVbuild.ai Course
-              <ExternalLink size="14px" />
-            </a>
-          </p>
-        </div>
-      </div> */}
-
       <div className="w-full mx-auto max-w-7xl py-2 px-5 flex items-center justify-between ">
         <div className="flex items-center flex-1 gap-9">
           <div>
@@ -81,14 +61,6 @@ const Header = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <Button
-            variant="outline"
-            size="icon"
-            className="!bg-transparent shrink-0"
-          >
-            <Settings className="h-[1.2rem] w-[1.2rem]" />
-          </Button>
 
           {isLoading || error ? (
             <Loader className="animate-spin !size-6 text-black dark:text-white" />

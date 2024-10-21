@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 
+export const INITIAL_THEME_COLOR = "#7c3aed";
+
 export const generateDocUUID = (): string => {
   // Generate UUID, remove hyphens, and take the first 8 characters
   const uuid = uuidv4().replace(/-/g, ""); // Remove hyphens

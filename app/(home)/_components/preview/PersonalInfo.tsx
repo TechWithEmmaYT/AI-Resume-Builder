@@ -1,36 +1,71 @@
+import { Skeleton } from "@/components/ui/skeleton";
+import { INITIAL_THEME_COLOR } from "@/lib/helper";
 import { ResumeDataType } from "@/types/resume.type";
 import React from "react";
 
 const PersonalInfo = ({
   resumeInfo,
+  isLoading,
 }: {
   resumeInfo: ResumeDataType | undefined;
+  isLoading: boolean;
 }) => {
+  const themeColor = resumeInfo?.themeColor || INITIAL_THEME_COLOR;
+
+  if (isLoading) {
+    return <SkeletonLoader />;
+  }
   return (
-    <div>
+    <div className="w-full min-h-14">
       <h2
         className="font-bold text-xl text-center"
         style={{
-          color: resumeInfo?.themeColor,
+          color: themeColor,
         }}
       >
-        {resumeInfo?.firstName} {resumeInfo?.lastName}
+        {resumeInfo?.personalInfo?.firstName || "First Name"}{" "}
+        {resumeInfo?.personalInfo?.lastName || "Last Name"}
       </h2>
       <h5 className="text-center text-sm font-medium">
-        {resumeInfo?.jobTitle}
+        {resumeInfo?.personalInfo?.jobTitle || "Job Title"}
       </h5>
-      <p className="text-center font-normal text-xs">{resumeInfo?.address}</p>
+      <p className="text-center font-normal text-[13px]">
+        {resumeInfo?.personalInfo?.address || "House Address"}
+      </p>
 
       <div className="flex justify-between pt-3">
-        <h5 className="font-normal text-xs">{resumeInfo?.phone}</h5>
-        <h5 className="font-normal text-xs">{resumeInfo?.email}</h5>
+        <h5 className="font-normal text-[13px]">
+          {resumeInfo?.personalInfo?.phone || "Phone Number"}
+        </h5>
+        <h5 className="font-normal text-[13px]">
+          {resumeInfo?.personalInfo?.email || "Email Address"}
+        </h5>
       </div>
       <hr
         className="border-[1.5px] my-2"
         style={{
-          borderColor: resumeInfo?.themeColor,
+          borderColor: themeColor,
         }}
       />
+    </div>
+  );
+};
+
+const SkeletonLoader = () => {
+  return (
+    <div className="w-full min-h-14">
+      <Skeleton className="h-6 w-1/2 mx-auto mb-2" />{" "}
+      {/* Placeholder for the name */}
+      <Skeleton className="h-4 w-1/4 mx-auto mb-2" />{" "}
+      {/* Placeholder for job title */}
+      <Skeleton className="h-3 w-1/3 mx-auto mb-3" />{" "}
+      {/* Placeholder for address */}
+      <div className="flex justify-between pt-3">
+        <Skeleton className="h-3 w-1/4" /> {/* Placeholder for phone */}
+        <Skeleton className="h-3 w-1/4" /> {/* Placeholder for email */}
+      </div>
+      <Skeleton className="h-[1.5px] w-full my-2" />{" "}
+      {/* Placeholder for the horizontal line */}
     </div>
   );
 };

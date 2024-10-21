@@ -1,50 +1,67 @@
 import React from "react";
 import { ResumeDataType } from "@/types/resume.type";
+import SkeletonLoader from "@/components/skeleton-loader";
+import { INITIAL_THEME_COLOR } from "@/lib/helper";
 
 const ExperiencePreview = ({
   resumeInfo,
+  isLoading,
 }: {
   resumeInfo: ResumeDataType | undefined;
+  isLoading: boolean;
 }) => {
+  const themeColor = resumeInfo?.themeColor || INITIAL_THEME_COLOR;
+
+  if (isLoading) {
+    return <SkeletonLoader />;
+  }
   return (
     <div className="w-full my-5">
       <h5
         className="text-center font-bold text-sm mb-2"
         style={{
-          color: resumeInfo?.themeColor,
+          color: themeColor,
         }}
       >
-        Proffessional Experience
+        Professional Experience
       </h5>
       <hr
         className="border-[1.5px]"
         style={{
-          borderColor: resumeInfo?.themeColor,
+          borderColor: themeColor,
         }}
       />
 
-      <div className="flex flex-col gap-2 pt-3">
-        {resumeInfo?.experience?.map((experience, index) => (
+      <div className="flex flex-col gap-2 pt-3 min-h-9">
+        {resumeInfo?.experiences?.map((experience, index) => (
           <div key={index}>
             <h5
-              className="text-sm font-bold"
+              className="text-[15px] font-bold"
               style={{
-                color: resumeInfo?.themeColor,
+                color: themeColor,
               }}
             >
               {experience?.title}
             </h5>
-            <div className="flex items-start justify-between">
-              <h5 className="text-xs">
-                {experience?.companyName}, {experience?.city}{" "}
+            <div className="flex items-start justify-between mb-2">
+              <h5 className="text-[13px]">
+                {experience?.companyName}
+                {experience?.companyName && experience?.city && `, `}
+                {experience?.city}
+                {experience?.city && experience?.state && `, `}
                 {experience?.state}
               </h5>
-              <span className="text-xs">
-                {experience?.startDate} -{" "}
+              <span className="text-[13px]">
+                {experience?.startDate}
+                {experience?.startDate && `- `}{" "}
                 {experience?.currentlyWorking ? "Present" : experience?.endDate}
               </span>
             </div>
-            <p className="text-xs my-2">{experience?.workSummery}</p>
+            <div
+              style={{ fontSize: "13px" }}
+              className="exp-preview leading-[14.6px] !text-black"
+              dangerouslySetInnerHTML={{ __html: experience?.workSummary }}
+            />
           </div>
         ))}
       </div>

@@ -69,6 +69,14 @@ npm i uuid@10.0.0
 ```
 
 ```bash
+npm i @google/generative-ai@0.21.0
+```
+
+```bash
+npm i react-simple-wysiwyg@3.1.2
+```
+
+```bash
 npm i --save-dev @types/uuid@10.0.0
 ```
 

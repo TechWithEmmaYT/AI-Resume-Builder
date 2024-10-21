@@ -6,6 +6,34 @@ html,
 body {
   height: 100%;
 }
+.exp-preview ul {
+  list-style: disc !important;
+  padding-left: 15px;
+}
+
+.exp-preview ol {
+  align-items: flex-start;
+  list-style: decimal !important;
+  padding-left: 15px !important;
+}
+
+.rsw-ce ul {
+  list-style: disc;
+  padding-left: 2em;
+}
+
+.rsw-ce ol {
+  list-style: decimal;
+  padding-left: 2em;
+}
+
+.open-sans-bold {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
 
 @layer utilities {
   .text-balance {
