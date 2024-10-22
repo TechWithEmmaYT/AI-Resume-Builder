@@ -26,6 +26,7 @@ export const documentTable = pgTable("document", {
   themeColor: varchar("theme_color", { length: 255 })
     .notNull()
     .default("#7c3aed"),
+  thumbnail: text("thumbnail"),
   currentPosition: integer("current_position").notNull().default(1),
   status: statusEnum("status").notNull().default("private"),
   authorName: varchar("author_name", { length: 255 }).notNull(),
@@ -46,16 +47,20 @@ export const documentRelations = relations(documentTable, ({ one, many }) => {
 export const createDocumentTableSchema = createInsertSchema(documentTable, {
   title: (schema) => schema.title.min(1),
   themeColor: (schema) => schema.themeColor.optional(),
+  thumbnail: (schema) => schema.thumbnail.optional(),
   currentPosition: (schema) => schema.currentPosition.optional(),
 }).pick({
   title: true,
+  status: true,
   summary: true,
   themeColor: true,
+  thumbnail: true,
   currentPosition: true,
 });
 
 export const updateCombinedSchema = z.object({
   title: createDocumentTableSchema.shape.title.optional(),
+  status: createDocumentTableSchema.shape.status.optional(),
   summary: createDocumentTableSchema.shape.summary.optional(),
   themeColor: createDocumentTableSchema.shape.themeColor.optional(),
   currentPosition: createDocumentTableSchema.shape.currentPosition.optional(),

@@ -6,7 +6,7 @@ const useGetDocuments = () => {
   const query = useQuery({
     queryKey: ["documents"],
     queryFn: async () => {
-      const response = await api.document.recent.$get();
+      const response = await api.document.all.$get();
 
       if (!response.ok) {
         throw new Error("Failed to get documents");

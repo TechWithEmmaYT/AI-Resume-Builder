@@ -45,6 +45,7 @@ function ThemeColor() {
 
   useEffect(() => {
     if (debouncedColor) onSave();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedColor]);
 
   const onColorSelect = useCallback(
@@ -56,11 +57,6 @@ function ThemeColor() {
         ...resumeInfo,
         themeColor: color,
       });
-      const data = {
-        data: {
-          themeColor: color,
-        },
-      };
     },
     [resumeInfo, onUpdate]
   );
@@ -88,7 +84,7 @@ function ThemeColor() {
         },
       }
     );
-  }, [resumeInfo, selectedColor]);
+  }, [mutateAsync, selectedColor]);
 
   return (
     <Popover>
@@ -107,8 +103,9 @@ function ThemeColor() {
       <PopoverContent align="start" className="bg-background">
         <h2 className="mb-2 text-sm font-bold">Select Theme Color</h2>
         <div className="grid grid-cols-5 gap-3">
-          {colors.map((item, index) => (
+          {colors.map((item, index: number) => (
             <div
+              key={index}
               onClick={() => onColorSelect(item)}
               className={`h-5 w-8 rounded-[5px] cursor-pointer
              hover:border-black border

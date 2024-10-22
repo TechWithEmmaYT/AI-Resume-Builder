@@ -1,18 +1,88 @@
-import React from "react";
+"use client";
+import React, { useCallback, useState } from "react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Globe, ShareIcon } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  Copy,
+  Globe,
+  Loader,
+  ShareIcon,
+} from "lucide-react";
+import { useResumeInfoContext } from "@/context/resume-info-provider";
+import useUpdateDocument from "@/features/document/use-update-document";
+import { toast } from "@/hooks/use-toast";
+import useOrigin from "@/hooks/use-origin";
+import { useParams } from "next/navigation";
 
 const Share = () => {
+  const param = useParams();
+  const documentId = param.documentId as string;
+
+  const { resumeInfo, isLoading, onUpdate } = useResumeInfoContext();
+  const { mutateAsync, isPending } = useUpdateDocument();
+  const origin = useOrigin();
+
+  const [copied, setCopied] = useState(false);
+
+  const url = `${origin}/preview/${documentId}/resume`;
+
+  const handleClick = useCallback(
+    async (status: "archived" | "private" | "public") => {
+      if (!resumeInfo) return;
+
+      await mutateAsync(
+        {
+          status: status,
+        },
+        {
+          onSuccess: () => {
+            onUpdate({
+              ...resumeInfo,
+              status: status,
+            });
+            toast({
+              title: "Success",
+              description: `Status set to ${status} successfully`,
+            });
+          },
+          onError() {
+            toast({
+              title: "Error",
+              description: "Failed to update status",
+              variant: "destructive",
+            });
+          },
+        }
+      );
+    },
+    [mutateAsync, onUpdate, resumeInfo]
+  );
+
+  const onCopy = () => {
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  };
+
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger
+        disabled={resumeInfo?.status === "archived" ? true : false}
+        asChild
+      >
         <Button
           variant="secondary"
+          disabled={isLoading}
+          type="button"
           className="bg-white border gap-1 dark:bg-gray-800 !w-10 !p-2 lg:!w-auto lg:p-4"
         >
           <div className="flex items-center gap-1">
@@ -22,17 +92,71 @@ const Share = () => {
           <ChevronDown size="14px" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="bg-background">
-        <div className="w-full flex flex-col gap-3 items-center justify-center">
-          <Globe size="40px" />
-          <div className="text-center">
-            <h5 className="font-semibold">Publish this resume</h5>
-            <p className="text-sm">Share your work with others</p>
+      <PopoverContent
+        className="bg-background"
+        align="end"
+        alignOffset={0}
+        forceMount
+      >
+        {resumeInfo?.status === "public" ? (
+          <div className="space-y-3">
+            <div className="flex gap-x-2 items-center">
+              <Globe size="15px" className="text-primary animate-pulse" />
+              <p className="text-xs font-medium text-primary">
+                This resume is shareable, copy the link!
+              </p>
+            </div>
+            <div className="flex items-center">
+              <input
+                className="flex-1 px-2 text-xs border
+                 rounded-l-md h-8 bg-muted truncate"
+                value={url}
+                disabled
+              />
+              <Button
+                className="h-8 rounded-l-none"
+                disabled={copied}
+                onClick={onCopy}
+              >
+                {copied ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Copy className="w-4 h-4" />
+                )}
+              </Button>
+            </div>
+            <hr className="border-muted !mb-0" />
+            <Button
+              size="sm"
+              variant="outline"
+              className="w-full border-primary text-primary  text-xs font-semibold"
+              onClick={() => handleClick("private")}
+              disabled={isPending}
+            >
+              {isPending && <Loader size="15px" className="animate-spin" />}
+              Private
+            </Button>
           </div>
-          <Button className="w-full !bg-black dark:!bg-primary font-medium text-white">
-            Publish
-          </Button>
-        </div>
+        ) : (
+          <div className="w-full flex flex-col gap-2 items-center justify-center">
+            <Globe size="40px" />
+            <div className="text-center mb-1">
+              <h5 className="font-semibold text-sm">Set to Public</h5>
+              <p className="text-xs text-muted-foreground">
+                To share it with others, you need to make it public.
+              </p>
+            </div>
+            <Button
+              className="w-full h-8 !bg-black dark:!bg-primary gap-1 font-medium text-white"
+              disabled={isPending}
+              type="button"
+              onClick={() => handleClick("public")}
+            >
+              {isPending && <Loader size="15px" className="animate-spin" />}
+              Make Public
+            </Button>
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   );

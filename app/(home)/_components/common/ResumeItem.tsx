@@ -73,10 +73,12 @@ const ResumeItem: FC<PropeType> = ({
       <div
         className="flex flex-col w-full h-full items-center 
       rounded-lg
-        justify-center bg-white dark:bg-secondary"
+        justify-center bg-[#fdfdfd] dark:bg-secondary"
       >
-        <div className="w-full flex flex-1 justify-center items-center">
-          <FileText />
+        <div className="w-full flex flex-1 px-1 pt-1">
+          <div className="w-full flex flex-1 bg-white dark:bg-gray-700  rounded-t-lg justify-center items-center">
+            <FileText />
+          </div>
         </div>
         <div className="shrink w-full border-t pt-2 pb-[9px] px-[9px]">
           <div className="flex items-center justify-between">

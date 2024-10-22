@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback } from "react";
-import { DownloadCloud, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import useUpdateDocument from "@/features/document/use-update-document";
 import { Button } from "@/components/ui/button";
 import ResumeTitle from "@/app/(home)/_components/common/ResumeTitle";
@@ -8,12 +8,14 @@ import { useResumeInfoContext } from "@/context/resume-info-provider";
 import { toast } from "@/hooks/use-toast";
 import ThemeColor from "./ThemeColor";
 import Share from "./Share";
+import PreviewModal from "../PreviewModal";
+import Download from "./Download";
 
 const TopSection = () => {
-  const { resumeInfo, onUpdate } = useResumeInfoContext();
+  const { resumeInfo, isLoading, onUpdate } = useResumeInfoContext();
 
   const { mutateAsync, isPending } = useUpdateDocument();
-  ("");
+
   const handleTitle = useCallback(
     (title: string) => {
       if (!resumeInfo) return;
@@ -63,14 +65,19 @@ const TopSection = () => {
         </span> */}
       </div>
       <div className="flex items-center gap-2">
+        {/* {ThemeColor} */}
         <ThemeColor />
-        <Button
-          variant="secondary"
-          className="bg-white border gap-1 dark:bg-gray-800 !w-10 !p-2 lg:!w-auto lg:p-4"
-        >
-          <DownloadCloud size="17px" />
-          <span className="hidden  lg:flex">Download Resume</span>
-        </Button>
+
+        {/* {Preview Resume} */}
+        <PreviewModal />
+
+        {/* {Download Resume} */}
+        <Download
+          title={resumeInfo?.title || "Untitled Resume"}
+          {...{
+            isLoading,
+          }}
+        />
         {/* {Share Resume} */}
         <Share />
 

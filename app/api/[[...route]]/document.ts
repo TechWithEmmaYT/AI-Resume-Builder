@@ -82,6 +82,7 @@ const documentRoute = new Hono()
 
         const {
           title,
+          status,
           summary,
           themeColor,
           currentPosition,
@@ -102,6 +103,7 @@ const documentRoute = new Hono()
           if (title) resumeUpdate.title = title;
           if (summary) resumeUpdate.summary = summary;
           if (themeColor) resumeUpdate.themeColor = themeColor;
+          if (status) resumeUpdate.status = status;
           if (currentPosition)
             resumeUpdate.currentPosition = currentPosition || 1;
 
@@ -269,7 +271,7 @@ const documentRoute = new Hono()
       }
     }
   )
-  .get("/recent", getAuthUser, async (c) => {
+  .get("/all", getAuthUser, async (c) => {
     try {
       const user = c.get("user");
       const userId = user.id;
@@ -278,8 +280,7 @@ const documentRoute = new Hono()
         .select()
         .from(documentTable)
         .orderBy(desc(documentTable.updatedAt))
-        .where(eq(documentTable.userId, userId))
-        .limit(5);
+        .where(eq(documentTable.userId, userId));
 
       return c.json({
         success: true,
@@ -369,7 +370,57 @@ const documentRoute = new Hono()
         );
       }
     }
+  )
+  .get(
+    "public/doc/:documentId",
+    zValidator(
+      "param",
+      z.object({
+        documentId: z.string(),
+      })
+    ),
+    async (c) => {
+      try {
+        const { documentId } = c.req.valid("param");
+
+        const documentData = await db.query.documentTable.findFirst({
+          where: and(
+            eq(documentTable.status, "public"),
+            eq(documentTable.documentId, documentId)
+          ),
+          with: {
+            personalInfo: true,
+            experiences: true,
+            educations: true,
+            skills: true,
+          },
+        });
+        if (!documentData) {
+          return c.json(
+            {
+              error: true,
+              message: "unauthorized",
+            },
+            401
+          );
+        }
+        return c.json({
+          success: true,
+          data: documentData,
+        });
+      } catch (error) {
+        return c.json(
+          {
+            success: false,
+            message: "Failed to fetch document",
+            error: error,
+          },
+          500
+        );
+      }
+    }
   );
+
 // .get(
 //   "/:status/all",
 //   zValidator(

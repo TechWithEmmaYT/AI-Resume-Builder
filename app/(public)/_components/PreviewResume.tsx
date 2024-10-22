@@ -1,29 +1,31 @@
+"use client";
 import React from "react";
-import { useResumeInfoContext } from "@/context/resume-info-provider";
-
-import { cn } from "@/lib/utils";
-import PersonalInfo from "./preview/PersonalInfo";
-import SummaryPreview from "./preview/SummaryPreview";
-import ExperiencePreview from "./preview/ExperiencePreview";
-import EducationalPreview from "./preview/EducationalPreview";
-import SkillPreview from "./preview/SkillPreview";
+import PersonalInfo from "@/app/(home)/_components/preview/PersonalInfo";
+import SummaryPreview from "@/app/(home)/_components/preview/SummaryPreview";
 import { INITIAL_THEME_COLOR } from "@/lib/helper";
+import { cn } from "@/lib/utils";
+import ExperiencePreview from "@/app/(home)/_components/preview/ExperiencePreview";
+import EducationalPreview from "@/app/(home)/_components/preview/EducationalPreview";
+import SkillPreview from "@/app/(home)/_components/preview/SkillPreview";
+import { ResumeDataType } from "@/types/resume.type";
 
-const ResumePreview = () => {
-  const { resumeInfo, isLoading } = useResumeInfoContext();
+const PreviewResume = (props: {
+  isLoading: boolean;
+  resumeInfo: ResumeDataType;
+}) => {
+  const { isLoading, resumeInfo } = props;
   const themeColor = resumeInfo?.themeColor || INITIAL_THEME_COLOR;
 
   return (
     <div
-      ref={null}
       id="resume-preview-id"
       className={cn(
         `shadow-lg bg-white w-full flex-[1.02] h-full p-10
      dark:border dark:bg-card !font-open-sans
-     dark:border-b-gray-800 dark:border-x-gray-800`
+     dark:border-b-gray-800 dark:border-x-gray-800 min-h-screen`
       )}
       style={{
-        borderTop: `13px solid ${themeColor || "red"}`,
+        borderTop: `13px solid ${themeColor}`,
       }}
     >
       {/* {Personnal Info} */}
@@ -44,4 +46,4 @@ const ResumePreview = () => {
   );
 };
 
-export default ResumePreview;
+export default PreviewResume;

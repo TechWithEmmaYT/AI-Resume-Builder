@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { File, Loader, Plus } from "lucide-react";
 import useCreateDocument from "@/features/document/use-create-document";
+import { generateThumbnail } from "@/lib/helper";
 
 const AddResume = () => {
   const router = useRouter();
@@ -17,6 +18,8 @@ const AddResume = () => {
         onSuccess: (response) => {
           const documentId = response.data.documentId;
           router.push(`/dashboard/document/${documentId}/edit`);
+
+          generateThumbnail();
         },
       }
     );

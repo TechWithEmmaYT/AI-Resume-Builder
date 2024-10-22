@@ -77,6 +77,14 @@ npm i react-simple-wysiwyg@3.1.2
 ```
 
 ```bash
+npm i jspdf@2.5.2
+```
+
+```bash
+npm i html2canvas@1.4.1
+```
+
+```bash
 npm i --save-dev @types/uuid@10.0.0
 ```
 

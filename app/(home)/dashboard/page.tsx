@@ -1,8 +1,8 @@
-import { Globe, LayoutDashboard, Lock, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AddResume from "../_components/AddResume";
 import ResumeList from "../_components/ResumeList";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+//import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Home() {
   return (
@@ -19,22 +19,19 @@ export default function Home() {
           </div>
 
           <div className="shrink-0 flex items-center gap-3">
-            <Button variant="outline" size="icon" className="!p-1">
-              <LayoutDashboard className="h-[1.2rem] w-[1.2rem]" />
-            </Button>
             <Button
               className="text-[15px] gap-[2px] items-center"
               variant="outline"
             >
               <Trash2 size="15px" />
-              <span>Trash</span>
+              <span>All Trash</span>
             </Button>
           </div>
         </div>
 
         <div className="w-full pt-11">
           <h5 className="text-xl font-semibold dark:text-inherit mb-3">
-            Recent Resume
+            All Resume
           </h5>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-2 ">
             <AddResume />
@@ -42,7 +39,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="w-full pt-11">
+        {/* <div className="w-full pt-11">
           <h5 className="text-xl font-semibold dark:text-inherit mb-3">
             My Resume
           </h5>
@@ -72,7 +69,7 @@ export default function Home() {
               </TabsContent>
             </Tabs>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
