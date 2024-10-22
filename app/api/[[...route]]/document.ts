@@ -84,6 +84,7 @@ const documentRoute = new Hono()
           title,
           status,
           summary,
+          thumbnail,
           themeColor,
           currentPosition,
           personalInfo,
@@ -101,6 +102,7 @@ const documentRoute = new Hono()
           // Update resume document
           const resumeUpdate = {} as UpdateDocumentSchema;
           if (title) resumeUpdate.title = title;
+          if (thumbnail) resumeUpdate.thumbnail = thumbnail;
           if (summary) resumeUpdate.summary = summary;
           if (themeColor) resumeUpdate.themeColor = themeColor;
           if (status) resumeUpdate.status = status;

@@ -45,6 +45,7 @@ export type ResumeDataType = {
   documentId?: string;
   title: string;
   status: "archived" | "private" | "public" | null;
+  thumbnail?: string | null;
   personalInfo?: PersonalInfoType | null;
   themeColor?: string | null;
   currentPosition?: number | null;

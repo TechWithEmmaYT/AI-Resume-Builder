@@ -1,30 +1,32 @@
 "use cient";
-import React, { FC, useCallback, useMemo, useState } from "react";
+import React, { FC, useCallback, useMemo } from "react";
 import {
   Dot,
   EllipsisVertical,
   FileText,
   Globe,
-  Link,
+  //Link,
   Lock,
-  Trash2,
+  //Trash2,
 } from "lucide-react";
 import { format } from "date-fns";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface PropeType {
   documentId: string;
   title: string;
   status: "archived" | "private" | "public" | null;
   themeColor: string | null;
+  thumbnail: string | null;
   updatedAt: string;
 }
 
@@ -33,10 +35,11 @@ const ResumeItem: FC<PropeType> = ({
   status,
   title,
   themeColor,
+  thumbnail,
   updatedAt,
 }) => {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
+  //const [isOpen, setIsOpen] = useState(false);
 
   const docDate = useMemo(() => {
     if (!updatedAt) return null;
@@ -49,10 +52,10 @@ const ResumeItem: FC<PropeType> = ({
   }, [router, documentId]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleOption = useCallback((e: any) => {
-    e.stopPropagation();
-    setIsOpen(true);
-  }, []);
+  // const handleOption = useCallback((e: any) => {
+  //   e.stopPropagation();
+  //   setIsOpen(true);
+  // }, []);
 
   return (
     <div
@@ -77,7 +80,18 @@ const ResumeItem: FC<PropeType> = ({
       >
         <div className="w-full flex flex-1 px-1 pt-1">
           <div className="w-full flex flex-1 bg-white dark:bg-gray-700  rounded-t-lg justify-center items-center">
-            <FileText />
+            {thumbnail ? (
+              <div className="relative w-full h-full rounded-t-lg overflow-hidden">
+                <Image
+                  fill
+                  src={thumbnail}
+                  alt={title}
+                  className="w-full h-full object-cover object-top rounded-t-lg"
+                />
+              </div>
+            ) : (
+              <FileText size="20px" />
+            )}
           </div>
         </div>
         <div className="shrink w-full border-t pt-2 pb-[9px] px-[9px]">
@@ -85,12 +99,17 @@ const ResumeItem: FC<PropeType> = ({
             <h5 className="font-semibold text-sm mb-[2px] truncate block w-[200px]">
               {title}
             </h5>
-            <DropdownMenu modal open={isOpen} onOpenChange={setIsOpen}>
-              <DropdownMenuTrigger asChild onClick={(e) => handleOption(e)}>
-                <button className="text-muted-foreground">
-                  <EllipsisVertical size="20px" />
-                </button>
-              </DropdownMenuTrigger>
+            <button className="text-muted-foreground">
+              <EllipsisVertical size="20px" />
+            </button>
+            {/* <DropdownMenu modal open={isOpen} onOpenChange={setIsOpen}>
+              <button className="text-muted-foreground">
+                <EllipsisVertical size="20px" />
+              </button>
+              <DropdownMenuTrigger
+                asChild
+                onClick={(e) => handleOption(e)}
+              ></DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem className="gap-1 !cursor-pointer">
                   {status === "private" ? (
@@ -114,7 +133,7 @@ const ResumeItem: FC<PropeType> = ({
                   Trash
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
           </div>
           <div
             className="flex items-center !text-[12px] 

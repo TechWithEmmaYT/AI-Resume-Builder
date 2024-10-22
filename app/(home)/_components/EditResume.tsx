@@ -1,12 +1,18 @@
 "use client";
-import React from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import TopSection from "@/app/(home)/_components/common/TopSection";
 import ResumeForm from "./ResumeForm";
 import ResumePreview from "./ResumePreview";
+import { useResumeInfoContext } from "@/context/resume-info-provider";
+import useUpdateDocument from "@/features/document/use-update-document";
+import { toast } from "@/hooks/use-toast";
+import { generateThumbnail } from "@/lib/helper";
 
 const EditResume = () => {
-  // const { resumeInfo, onUpdate } = useResumeInfoContext();
-  // const { mutateAsync } = useUpdateDocument();
+  const { resumeInfo } = useResumeInfoContext();
+  const { mutateAsync } = useUpdateDocument();
+
+  const hasUpdatedThumbnailRef = useRef(false);
 
   // const [isSaving, setIsSaving] = useState<boolean>(false);
   // const [saveStatus, setSaveStatus] = useState<string>("All changes saved");
@@ -75,6 +81,47 @@ const EditResume = () => {
   //     saveFormData();
   //   }
   // }, [debouncedFormData, saveFormData]);
+
+  const updateThumbnail = useCallback(async () => {
+    if (!resumeInfo) return;
+
+    if (resumeInfo?.thumbnail) {
+      hasUpdatedThumbnailRef.current = true;
+      return;
+    }
+    const thumbnail = await generateThumbnail();
+
+    if (!thumbnail) return;
+
+    await mutateAsync(
+      {
+        thumbnail: thumbnail,
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Success",
+            description: `Thumbnail updated successfully`,
+          });
+          hasUpdatedThumbnailRef.current = true;
+        },
+        onError() {
+          toast({
+            title: "Error",
+            description: "Failed to update thumbnail",
+            variant: "destructive",
+          });
+        },
+      }
+    );
+  }, [mutateAsync, resumeInfo]);
+
+  useEffect(() => {
+    console.log("updateThumbnail");
+    if (hasUpdatedThumbnailRef.current) return;
+
+    updateThumbnail();
+  }, [updateThumbnail]);
 
   return (
     <div className="w-full mx-auto max-w-7xl  py-4 px-5">

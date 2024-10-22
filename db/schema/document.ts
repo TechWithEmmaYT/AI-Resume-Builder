@@ -61,6 +61,7 @@ export const createDocumentTableSchema = createInsertSchema(documentTable, {
 export const updateCombinedSchema = z.object({
   title: createDocumentTableSchema.shape.title.optional(),
   status: createDocumentTableSchema.shape.status.optional(),
+  thumbnail: createDocumentTableSchema.shape.thumbnail.optional(),
   summary: createDocumentTableSchema.shape.summary.optional(),
   themeColor: createDocumentTableSchema.shape.themeColor.optional(),
   currentPosition: createDocumentTableSchema.shape.currentPosition.optional(),
