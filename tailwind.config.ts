@@ -51,10 +51,23 @@ const config: Config = {
           "5": "hsl(var(--chart-5))",
         },
       },
+
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        sparkle: {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
+      },
+      animation: {
+        sparkle: "sparkle 3s ease-in-out infinite",
+      },
+      backgroundSize: {
+        "size-200": "200% 200%",
       },
       fontFamily: {
         "open-sans": ["var(--font-open_sans)"],

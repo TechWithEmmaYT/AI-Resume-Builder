@@ -1,7 +1,11 @@
 "use client";
 import React, { Fragment } from "react";
 import { ChevronDown, Loader, MoonIcon, SunIcon } from "lucide-react";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import {
+  LogoutLink,
+  //LogoutLink,
+  useKindeBrowserClient,
+} from "@kinde-oss/kinde-auth-nextjs";
 import { useTheme } from "next-themes";
 import {
   DropdownMenu,
@@ -82,8 +86,11 @@ const Header = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="my-3">
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="!text-red-500 font-medium !cursor-pointer">
-                      Log out
+                    <DropdownMenuItem
+                      asChild
+                      className="!text-red-500 font-medium !cursor-pointer"
+                    >
+                      <LogoutLink>Log out</LogoutLink>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

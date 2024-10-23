@@ -13,9 +13,9 @@ const NavBar = () => {
       <div className="w-full flex items-center justify-center h-auto bg-black">
         <div className="max-w-6xl mx-auto py-2">
           <p className="text-white text-sm">
-            Little work experience? Boost your resume with CVbuild.ai Resume
-            Course out{" "}
-            <a className="inline-flex items-center gap-1 font-bold text-green-500">
+            <b>Subcribe to the channel 🙏</b>! Boost your resume with CVbuild.ai
+            Resume Course out{" "}
+            <a className="inline-flex items-center gap-1 font-bold text-primary">
               CVbuild.ai Course
               <ExternalLink size="14px" />
             </a>
