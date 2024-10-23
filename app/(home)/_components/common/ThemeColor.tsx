@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { useResumeInfoContext } from "@/context/resume-info-provider";
-import { INITIAL_THEME_COLOR } from "@/lib/helper";
+import { generateThumbnail, INITIAL_THEME_COLOR } from "@/lib/helper";
 import { toast } from "@/hooks/use-toast";
 import useUpdateDocument from "@/features/document/use-update-document";
 import useDebounce from "@/hooks/use-debounce";
@@ -64,9 +64,12 @@ function ThemeColor() {
   const onSave = useCallback(async () => {
     if (!selectedColor) return;
     if (selectedColor === INITIAL_THEME_COLOR) return;
+    const thumbnail = await generateThumbnail();
+
     await mutateAsync(
       {
         themeColor: selectedColor,
+        thumbnail: thumbnail,
       },
       {
         onSuccess: () => {
