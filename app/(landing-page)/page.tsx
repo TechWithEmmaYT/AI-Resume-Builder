@@ -7,11 +7,11 @@ export default function Home() {
     <div className="w-full">
       <div className="hero-section w-full min-h-screen">
         <div className="w-full flex flex-col items-center justify-center py-10 max-w-4xl mx-auto">
-          <div className="rounded-full flex items-center gap-1 text-xs h-auto p-2 bg-muted max-w-60">
+          <div className="rounded-full flex items-center font- font-medium gap-1 text-sm h-auto p-2 bg-muted max-w-80">
             <div className="p-2 h-5 shrink-0 flex items-center text-xs justify-center text-white bg-primary rounded-full">
               New
             </div>
-            Subscribe to Teachwithemma
+            Subscribe to Techwithemma
             <ChevronRight className="w-4 h-4" />
           </div>
 
