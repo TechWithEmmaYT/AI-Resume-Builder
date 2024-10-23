@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { ChevronRight, Video } from "lucide-react";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -47,12 +48,24 @@ export default function Home() {
               </Button>
             </div>
           </div>
-
-          <div className="w-full pt-16">
-            <div className="w-full h-[400px] rounded-md shadow-lg bg-[#eee]"></div>
+        </div>
+        <div className="w-full relative max-w-5xl mx-auto px-4 md:px-6 lg:px-8">
+          <div className="absolute top-10 left-1/2 transform -translate-x-1/2 w-full h-[400px] bg-gradient-to-r from-primary to-blue-500 rounded-full blur-3xl opacity-40 z-0" />
+          <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-xl shadow-lg bg-background">
+            <div className="relative w-full h-full rounded-md">
+              <Image
+                src="/images/board-img.png"
+                alt="App dashboard"
+                fill
+                className="object-contain w-full h-full rounded-md"
+              />
+            </div>
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
     </div>
   );
 }
