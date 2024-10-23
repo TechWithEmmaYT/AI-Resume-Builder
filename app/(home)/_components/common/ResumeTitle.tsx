@@ -43,10 +43,11 @@ const ResumeTitle: React.FC<ResumeTitleProps> = ({
         className={cn(
           "text-[20px] px-1 text-gray-700 dark:text-gray-300 font-semibold opacity-100",
           {
-            "!opacity-70": isLoading === true,
+            "!opacity-70 !pointer-events-none":
+              isLoading === true || status === "archived",
           }
         )}
-        contentEditable={isLoading ? false : true}
+        contentEditable={isLoading || status === "archived" ? false : true}
         suppressContentEditableWarning={true} // Suppress warning for contentEditable
         onBlur={handleBlur} // Handle save on blur
         onKeyDown={handleKeyDown} // Handle Enter key

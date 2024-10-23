@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import TopSection from "@/app/(home)/_components/common/TopSection";
 import ResumeForm from "./ResumeForm";
 import ResumePreview from "./ResumePreview";
@@ -82,16 +82,19 @@ const EditResume = () => {
   //   }
   // }, [debouncedFormData, saveFormData]);
 
+  // dont do this on plssssss
   const updateThumbnail = useCallback(async () => {
     if (!resumeInfo) return;
-
     if (resumeInfo?.thumbnail) {
       hasUpdatedThumbnailRef.current = true;
       return;
     }
+
     const thumbnail = await generateThumbnail();
 
     if (!thumbnail) return;
+
+    console.log("thumbnail");
 
     await mutateAsync(
       {
@@ -117,21 +120,21 @@ const EditResume = () => {
   }, [mutateAsync, resumeInfo]);
 
   useEffect(() => {
-    console.log("updateThumbnail");
     if (hasUpdatedThumbnailRef.current) return;
-
     updateThumbnail();
-  }, [updateThumbnail]);
+  }, [hasUpdatedThumbnailRef.current]);
 
   return (
-    <div className="w-full mx-auto max-w-7xl  py-4 px-5">
-      <TopSection />
-      <div className="w-full mt-1">
-        <div className="flex flex-col lg:flex-row items-start w-full py-3 gap-6">
-          {/* { Form Section} */}
-          <ResumeForm />
-          {/* { Preview Section} */}
-          <ResumePreview />
+    <div className="relative w-full">
+      <div className="w-full mx-auto max-w-7xl  py-4 px-5">
+        <TopSection />
+        <div className="w-full mt-1">
+          <div className="flex flex-col lg:flex-row items-start w-full py-3 gap-6">
+            {/* { Form Section} */}
+            <ResumeForm />
+            {/* { Preview Section} */}
+            <ResumePreview />
+          </div>
         </div>
       </div>
     </div>

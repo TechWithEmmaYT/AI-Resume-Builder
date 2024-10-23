@@ -32,19 +32,21 @@ export type SkillType = {
 export type PersonalInfoType = {
   id?: number;
   docId?: number | null;
-  firstName: string | null;
-  lastName: string | null;
-  jobTitle: string | null;
-  address: string | null;
-  phone: string | null;
-  email: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  jobTitle?: string | null;
+  address?: string | null;
+  phone?: string | null;
+  email?: string | null;
 };
+
+export type StatusType = "archived" | "private" | "public" | null;
 
 export type ResumeDataType = {
   id?: number;
   documentId?: string;
   title: string;
-  status: "archived" | "private" | "public" | null;
+  status: StatusType;
   thumbnail?: string | null;
   personalInfo?: PersonalInfoType | null;
   themeColor?: string | null;

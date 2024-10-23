@@ -41,7 +41,7 @@ function ThemeColor() {
   const { mutateAsync } = useUpdateDocument();
 
   const [selectedColor, setSelectedColor] = useState(INITIAL_THEME_COLOR);
-  const debouncedColor = useDebounce<string>(selectedColor, 3000);
+  const debouncedColor = useDebounce<string>(selectedColor, 1000);
 
   useEffect(() => {
     if (debouncedColor) onSave();
@@ -90,6 +90,7 @@ function ThemeColor() {
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          disabled={resumeInfo?.status === "archived" ? true : false}
           variant="secondary"
           className="bg-white border gap-1 dark:bg-gray-800 !w-10 !p-2 lg:!w-auto lg:p-4"
         >

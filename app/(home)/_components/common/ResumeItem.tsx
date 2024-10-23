@@ -90,7 +90,7 @@ const ResumeItem: FC<PropeType> = ({
                 />
               </div>
             ) : (
-              <FileText size="20px" />
+              <FileText size="30px" />
             )}
           </div>
         </div>

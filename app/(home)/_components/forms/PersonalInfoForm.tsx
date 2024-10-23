@@ -9,6 +9,7 @@ import { PersonalInfoType } from "@/types/resume.type";
 import useUpdateDocument from "@/features/document/use-update-document";
 import { Loader } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { generateThumbnail } from "@/lib/helper";
 
 const initialState = {
   firstName: "",
@@ -21,7 +22,7 @@ const initialState = {
 
 const PersonalInfoForm = (props: { handleNext: () => void }) => {
   const { handleNext } = props;
-  const { resumeInfo, isLoading } = useResumeInfoContext();
+  const { resumeInfo, onUpdate, isLoading } = useResumeInfoContext();
   const { mutateAsync, isPending } = useUpdateDocument();
 
   const [personalInfo, setPersonalInfo] =
@@ -38,24 +39,39 @@ const PersonalInfoForm = (props: { handleNext: () => void }) => {
     }
   }, [resumeInfo?.personalInfo]);
 
-  const handleChange = (e: { target: { name: string; value: string } }) => {
-    const { name, value } = e.target;
+  const handleChange = useCallback(
+    (e: { target: { name: string; value: string } }) => {
+      const { name, value } = e.target;
 
-    setPersonalInfo((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+      setPersonalInfo({ ...personalInfo, [name]: value });
+
+      if (!resumeInfo) return;
+      onUpdate({
+        ...resumeInfo,
+        personalInfo: {
+          ...resumeInfo.personalInfo,
+          [name]: value,
+        },
+      });
+    },
+    [resumeInfo, onUpdate]
+  );
 
   const handleSubmit = useCallback(
     async (e: { preventDefault: () => void }) => {
       e.preventDefault();
       if (!resumeInfo) return;
+
+      const thumbnail = await generateThumbnail();
+
+      const currentNo = resumeInfo.currentPosition
+        ? resumeInfo.currentPosition + 1
+        : 1;
+
       await mutateAsync(
         {
-          title: resumeInfo?.title || "Untitled Resume",
-          currentPosition: resumeInfo.currentPosition || 1,
-          themeColor: resumeInfo.themeColor ?? "#7c3aed",
+          currentPosition: currentNo,
+          thumbnail: thumbnail,
           personalInfo: personalInfo,
         },
         {
@@ -97,6 +113,7 @@ const PersonalInfoForm = (props: { handleNext: () => void }) => {
               <Input
                 name="firstName"
                 required
+                autoComplete="off"
                 placeholder=""
                 value={personalInfo?.firstName || ""}
                 onChange={handleChange}
@@ -108,6 +125,7 @@ const PersonalInfoForm = (props: { handleNext: () => void }) => {
               <Input
                 name="lastName"
                 required
+                autoComplete="off"
                 placeholder=""
                 value={personalInfo?.lastName || ""}
                 onChange={handleChange}
@@ -118,6 +136,7 @@ const PersonalInfoForm = (props: { handleNext: () => void }) => {
               <Label className="text-sm">Job Title</Label>
               <Input
                 name="jobTitle"
+                autoComplete="off"
                 required
                 value={personalInfo?.jobTitle || ""}
                 onChange={handleChange}
@@ -128,6 +147,7 @@ const PersonalInfoForm = (props: { handleNext: () => void }) => {
               <Label className="text-sm">Address</Label>
               <Input
                 name="address"
+                autoComplete="off"
                 required
                 value={personalInfo?.address || ""}
                 onChange={handleChange}
@@ -138,6 +158,7 @@ const PersonalInfoForm = (props: { handleNext: () => void }) => {
               <Label className="text-sm">Phone number</Label>
               <Input
                 name="phone"
+                autoComplete="off"
                 required
                 value={personalInfo?.phone || ""}
                 onChange={handleChange}
@@ -148,6 +169,7 @@ const PersonalInfoForm = (props: { handleNext: () => void }) => {
               <Label className="text-sm">Email</Label>
               <Input
                 name="email"
+                autoComplete="off"
                 value={personalInfo?.email || ""}
                 required
                 onChange={handleChange}
@@ -155,7 +177,13 @@ const PersonalInfoForm = (props: { handleNext: () => void }) => {
             </div>
           </div>
 
-          <Button className="mt-4" type="submit" disabled={isPending}>
+          <Button
+            className="mt-4"
+            type="submit"
+            disabled={
+              isPending || resumeInfo?.status === "archived" ? true : false
+            }
+          >
             {isPending && <Loader size="15px" className="animate-spin" />}
             Save Changes
           </Button>

@@ -20,6 +20,7 @@ const PreviewModal = () => {
       <Dialog>
         <DialogTrigger asChild>
           <Button
+            disabled={resumeInfo?.status === "archived" ? true : false}
             variant="secondary"
             className="bg-white border gap-1 dark:bg-gray-800 !w-10 !p-2 lg:!w-auto lg:p-4"
           >
@@ -37,7 +38,7 @@ const PreviewModal = () => {
       overflow-y-auto
       "
         >
-          <DialogHeader className="!pb-0 !m-0 sticky top-0 backdrop-blur bg-white/80 z-1">
+          <DialogHeader className="!pb-0 !m-0 sticky top-0 backdrop-blur bg-white/80 dark:bg-black/80 z-1">
             <DialogTitle className="flex items-center gap-1 text-[20px] pt-2 px-3 font-semibold opacity-100">
               <FileText className="stroke-primary" size="20px" />
               {resumeInfo?.title || "Untitled Resume"}

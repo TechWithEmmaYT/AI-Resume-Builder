@@ -11,9 +11,13 @@ import { useResumeInfoContext } from "@/context/resume-info-provider";
 const ResumeForm = () => {
   const { resumeInfo, onUpdate } = useResumeInfoContext();
 
-  const [activeFormIndex, setActiveFormIndex] = useState(
-    resumeInfo?.currentPosition || 1
-  );
+  const [activeFormIndex, setActiveFormIndex] = useState(1);
+
+  // useEffect(() => {
+  //   if (!resumeInfo) return;
+  //   const current = resumeInfo?.currentPosition;
+  //   setActiveFormIndex(current || 1);
+  // }, [resumeInfo]);
 
   const handleNext = () => {
     const newIndex = activeFormIndex + 1;
@@ -48,7 +52,11 @@ const ResumeForm = () => {
           <Button
             variant="outline"
             size="default"
-            disabled={activeFormIndex === 5}
+            disabled={
+              activeFormIndex === 5 || resumeInfo?.status === "archived"
+                ? true
+                : false
+            }
             className="!px-2 !py-1 !h-auto"
             onClick={() => setActiveFormIndex(activeFormIndex + 1)}
           >

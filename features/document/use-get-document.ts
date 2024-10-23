@@ -2,11 +2,13 @@
 import { api } from "@/lib/hono-rpc";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetDocuments = () => {
+const useGetDocuments = (isTrash: boolean) => {
+  const queryKey = isTrash ? ["trashDocuments"] : ["documents"];
   const query = useQuery({
-    queryKey: ["documents"],
+    queryKey: queryKey,
     queryFn: async () => {
-      const response = await api.document.all.$get();
+      const endpoint = isTrash ? api.document.trash.all : api.document.all;
+      const response = await endpoint.$get();
 
       if (!response.ok) {
         throw new Error("Failed to get documents");

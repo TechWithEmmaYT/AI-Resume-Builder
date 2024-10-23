@@ -5,7 +5,7 @@ import ResumeItem from "./common/ResumeItem";
 import { Loader, RotateCw } from "lucide-react";
 
 const ResumeList = () => {
-  const { data, isLoading, isError, refetch } = useGetDocuments();
+  const { data, isLoading, isError, refetch } = useGetDocuments(false);
 
   const resumes = data?.data ?? [];
 

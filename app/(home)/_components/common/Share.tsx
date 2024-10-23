@@ -81,7 +81,9 @@ const Share = () => {
       >
         <Button
           variant="secondary"
-          disabled={isLoading}
+          disabled={
+            resumeInfo?.status === "archived" ? true : false || isLoading
+          }
           type="button"
           className="bg-white border gap-1 dark:bg-gray-800 !w-10 !p-2 lg:!w-auto lg:p-4"
         >
@@ -147,13 +149,13 @@ const Share = () => {
               </p>
             </div>
             <Button
-              className="w-full h-8 !bg-black dark:!bg-primary gap-1 font-medium text-white"
+              className="w-full h-8 !bg-black text-xs dark:!bg-primary gap-1 font-semibold text-white"
               disabled={isPending}
               type="button"
               onClick={() => handleClick("public")}
             >
               {isPending && <Loader size="15px" className="animate-spin" />}
-              Make Public
+              Public
             </Button>
           </div>
         )}

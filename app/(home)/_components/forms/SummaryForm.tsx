@@ -9,6 +9,7 @@ import { AIChatSession } from "@/lib/google-ai-modal";
 import { toast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useUpdateDocument from "@/features/document/use-update-document";
+import { generateThumbnail } from "@/lib/helper";
 
 interface GeneratedSummaryType {
   fresher: string;
@@ -45,9 +46,15 @@ const SummaryForm = (props: { handleNext: () => void }) => {
     async (e: { preventDefault: () => void }) => {
       e.preventDefault();
       if (!resumeInfo) return;
+      const thumbnail = await generateThumbnail();
+      const currentNo = resumeInfo.currentPosition
+        ? resumeInfo.currentPosition + 1
+        : 1;
+
       await mutateAsync(
         {
-          currentPosition: resumeInfo.currentPosition || 1,
+          currentPosition: currentNo,
+          thumbnail: thumbnail,
           summary: resumeInfo?.summary,
         },
         {

@@ -17,40 +17,37 @@ import {
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Loader, Sparkles } from "lucide-react";
-import { useResumeInfoContext } from "@/context/resume-info-provider";
 import { AIChatSession } from "@/lib/google-ai-modal";
 import { toast } from "@/hooks/use-toast";
 
-const PROMPT = `Given the job title "{jobTitle}", create 6-7 concise and personal bullet points in HTML format that highlight my key skills, relevant technologies, and significant contributions in that role. Do not include the job title itself in the output. Provide only the bullet points inside an unordered list.`;
+const PROMPT = `Given the job title "{jobTitle}", create 6-7 concise and personal bullet points in HTML stringify format that highlight my key skills, relevant technologies, and significant contributions in that role. Do not include the job title itself in the output. Provide only the bullet points inside an unordered list.`;
 
 const RichTextEditor = (props: {
-  index: number;
+  jobTitle: string | null;
   initialValue: string;
   onEditorChange: (e: any) => void;
 }) => {
-  const { index, initialValue, onEditorChange } = props;
-  const { resumeInfo } = useResumeInfoContext();
+  const { jobTitle, initialValue, onEditorChange } = props;
+
   const [loading, setLoading] = useState(false);
 
   const [value, setValue] = useState(initialValue || "");
 
   const GenerateSummaryFromAI = async () => {
+    console.log(jobTitle, "jobTitle");
     try {
-      if (!resumeInfo?.experience?.[index]?.title) {
+      if (!jobTitle) {
         toast({
           title: "Must provide Job Postion",
           variant: "destructive",
         });
         return;
       }
-      const jobTitle = resumeInfo?.experience?.[index]?.title;
       setLoading(true);
       const prompt = PROMPT.replace("{jobTitle}", jobTitle);
       const result = await AIChatSession.sendMessage(prompt);
       const responseText = await result.response.text();
       const validJsonArray = JSON.parse(`[${responseText}]`);
-      console.log(validJsonArray[0]);
-      // console.log(validJsonArray);
       setValue(validJsonArray?.[0]);
       onEditorChange(validJsonArray?.[0]);
       //setAiGeneratedSummary(JSON?.parse(responseText));

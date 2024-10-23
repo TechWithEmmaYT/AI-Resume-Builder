@@ -9,6 +9,7 @@ import { Loader, Plus, X } from "lucide-react";
 import RichTextEditor from "@/components/editor";
 import useUpdateDocument from "@/features/document/use-update-document";
 import { toast } from "@/hooks/use-toast";
+import { generateThumbnail } from "@/lib/helper";
 
 const initialState = {
   title: "",
@@ -84,9 +85,15 @@ const ExperienceForm = (props: { handleNext: () => void }) => {
     async (e: { preventDefault: () => void }) => {
       e.preventDefault();
       if (!resumeInfo) return;
+      const thumbnail = await generateThumbnail();
+      const currentNo = resumeInfo.currentPosition
+        ? resumeInfo.currentPosition + 1
+        : 1;
+
       await mutateAsync(
         {
-          currentPosition: resumeInfo.currentPosition || 1,
+          currentPosition: currentNo,
+          thumbnail: thumbnail,
           experience: experienceList,
         },
         {
@@ -200,10 +207,10 @@ const ExperienceForm = (props: { handleNext: () => void }) => {
                 <div className="col-span-2 mt-1">
                   {/* {Work Summary} */}
                   <RichTextEditor
-                    index={index}
+                    jobTitle={item.title}
                     initialValue={item.workSummary || ""}
-                    onEditorChange={(event) =>
-                      handleEditor(event, "workSummary", index)
+                    onEditorChange={(value: string) =>
+                      handleEditor(value, "workSummary", index)
                     }
                   />
                 </div>

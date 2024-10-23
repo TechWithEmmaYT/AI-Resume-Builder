@@ -37,21 +37,21 @@ export const resumeData = {
       </ul>
       `,
     },
-    // {
-    //   id: 2,
-    //   title: "Frontend Developer",
-    //   companyName: "Facebook",
-    //   city: "Menlo Park",
-    //   state: "CA",
-    //   startDate: "Aug 2019",
-    //   endDate: "Jan 2022",
-    //   currentlyWorking: false,
-    //   workSummary:
-    //     "• Designed and developed high-performance user interfaces using React and Redux.\n" +
-    //     "• Worked closely with UX/UI designers to ensure seamless and intuitive user experiences.\n" +
-    //     "• Implemented responsive design techniques for optimal viewing on all devices.\n" +
-    //     "• Mentored junior developers and conducted code reviews to maintain high-quality standards.",
-    // },
+    {
+      id: 2,
+      title: "Frontend Developer",
+      companyName: "Facebook",
+      city: "Menlo Park",
+      state: "CA",
+      startDate: "Aug 2019",
+      endDate: "Jan 2022",
+      currentlyWorking: false,
+      workSummary:
+        "• Designed and developed high-performance user interfaces using React and Redux.\n" +
+        "• Worked closely with UX/UI designers to ensure seamless and intuitive user experiences.\n" +
+        "• Implemented responsive design techniques for optimal viewing on all devices.\n" +
+        "• Mentored junior developers and conducted code reviews to maintain high-quality standards.",
+    },
   ],
   education: [
     {

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeInfoContext } from "@/context/resume-info-provider";
 import useUpdateDocument from "@/features/document/use-update-document";
+import { generateThumbnail } from "@/lib/helper";
 
 const initialState = {
   universityName: "",
@@ -71,9 +72,16 @@ const EducationForm = (props: { handleNext: () => void }) => {
     async (e: { preventDefault: () => void }) => {
       e.preventDefault();
       if (!resumeInfo) return;
+      const thumbnail = await generateThumbnail();
+
+      const currentNo = resumeInfo.currentPosition
+        ? resumeInfo.currentPosition + 1
+        : 1;
+
       await mutateAsync(
         {
-          currentPosition: resumeInfo.currentPosition || 1,
+          currentPosition: currentNo,
+          thumbnail: thumbnail,
           education: educationList,
         },
         {

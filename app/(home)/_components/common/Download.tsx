@@ -5,9 +5,14 @@ import { Button } from "@/components/ui/button";
 import { DownloadCloud } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { formatFileName } from "@/lib/helper";
+import { StatusType } from "@/types/resume.type";
 
-const Download = (props: { title: string; isLoading: boolean }) => {
-  const { title, isLoading: loading } = props;
+const Download = (props: {
+  title: string;
+  isLoading: boolean;
+  status?: StatusType;
+}) => {
+  const { title, status, isLoading: loading } = props;
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleDownload = useCallback(async () => {
@@ -60,7 +65,7 @@ const Download = (props: { title: string; isLoading: boolean }) => {
   return (
     <Button
       variant="secondary"
-      disabled={isLoading || loading}
+      disabled={isLoading || loading || status === "archived" ? true : false}
       type="button"
       className="bg-white border gap-1 dark:bg-gray-800 !w-10 !p-2 lg:!w-auto lg:p-4"
       onClick={handleDownload}

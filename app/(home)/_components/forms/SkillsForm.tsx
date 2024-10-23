@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Loader, Plus, X } from "lucide-react";
 import useUpdateDocument from "@/features/document/use-update-document";
 import { toast } from "@/hooks/use-toast";
+import { generateThumbnail } from "@/lib/helper";
 
 const initialState = {
   name: "",
@@ -63,10 +64,12 @@ const SkillsForm = () => {
   const handleSubmit = useCallback(
     async (e: { preventDefault: () => void }) => {
       e.preventDefault();
-      if (!resumeInfo) return;
+      const thumbnail = await generateThumbnail();
+
       await mutateAsync(
         {
           currentPosition: 1,
+          thumbnail: thumbnail,
           skills: skillsList,
         },
         {
@@ -86,7 +89,7 @@ const SkillsForm = () => {
         }
       );
     },
-    [resumeInfo, skillsList]
+    [skillsList]
   );
 
   return (

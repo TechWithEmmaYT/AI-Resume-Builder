@@ -1,7 +1,6 @@
-import { Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import AddResume from "../_components/AddResume";
 import ResumeList from "../_components/ResumeList";
+import TrashListBox from "../_components/TrashListBox";
 //import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Home() {
@@ -19,13 +18,7 @@ export default function Home() {
           </div>
 
           <div className="shrink-0 flex items-center gap-3">
-            <Button
-              className="text-[15px] gap-[2px] items-center"
-              variant="outline"
-            >
-              <Trash2 size="15px" />
-              <span>All Trash</span>
-            </Button>
+            <TrashListBox />
           </div>
         </div>
 
